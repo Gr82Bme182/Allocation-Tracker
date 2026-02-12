@@ -1,0 +1,53 @@
+function lockFieldsOnComplete(executionContext) {
+    console.log("--- Script Started: lockFieldsOnComplete ---");
+
+    // 1. Get the Form Context
+    var formContext = executionContext.getFormContext();
+    
+    // 2. Define variables
+    var phaseFieldName = "lc_phase"; 
+    var completedValue = 124230002;
+
+    // 3. Get the attribute
+    var phaseAttribute = formContext.getAttribute(phaseFieldName);
+
+    // DEBUG: Check if we found the field
+    if (!phaseAttribute) {
+        console.error("ERROR: Could not find attribute with name: " + phaseFieldName);
+        alert("Script Error: The field '" + phaseFieldName + "' was not found on this form. Check the Logical Name.");
+        return;
+    }
+
+    // 4. Check the value
+    var currentValue = phaseAttribute.getValue();
+    console.log("Current Phase Value: " + currentValue);
+    console.log("Target Phase Value: " + completedValue);
+
+    // We use '==' to allow loose comparison in case one is a string and one is a number
+    if (currentValue == completedValue) {
+        console.log("Condition Met! Locking controls...");
+
+        // 5. Loop through ALL controls
+        var controls = formContext.ui.controls;
+        
+        controls.forEach(function (control, index) {
+            try {
+                // Determine if control is a standard field
+                var controlName = control.getName();
+                
+                // Avoid locking the phase field itself so you can unlock it if needed (Optional)
+                // if (controlName === phaseFieldName) return; 
+
+                if (control.setDisabled) {
+                    control.setDisabled(true);
+                }
+            } catch (e) {
+                console.warn("Could not disable control: " + control.getName());
+            }
+        });
+        
+        console.log("--- Locking Complete ---");
+    } else {
+        console.log("Condition NOT Met. Fields remain editable.");
+    }
+}
