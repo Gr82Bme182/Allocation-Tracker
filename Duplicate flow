@@ -1,0 +1,52 @@
+With(
+    {
+        varnew: Patch(
+            'Allocation Requests',
+            Defaults('Allocation Requests'),
+            {
+                'Capital/Expense': Self.Selected.Item.'Capital/Expense',
+                District: Self.Selected.Item.District,
+                'District Manager': Self.Selected.Item.'District Manager',
+                'District Support Engineer': Self.Selected.Item.'District Support Engineer',
+                DPN: Self.Selected.Item.DPN,
+                'ES Manager': Self.Selected.Item.'ES Manager',
+                'FAC ID': Self.Selected.Item.'FAC ID',
+                'Fund Code': Self.Selected.Item.'Fund Code',
+                'Group Manager': Self.Selected.Item.'Group Manager',
+                JCN: Self.Selected.Item.JCN,
+                'LOC ID': Self.Selected.Item.'LOC ID',
+                MPA: Self.Selected.Item.MPA,
+                'NAS Plan Manager': Self.Selected.Item.'NAS Plan Manager',
+                'Org Code': Self.Selected.Item.'Org Code',
+                'OSS Manager': Self.Selected.Item.'OSS Manager',
+                'PE Name': Self.Selected.Item.'PE Name',
+                PIM: Self.Selected.Item.PIM,
+                'Program Category Name': Self.Selected.Item.'Program Category Name',
+                'Project Coordinator': Self.Selected.Item.'Project Coordinator',
+                SSC: Self.Selected.Item.SSC,
+                'SSC Manager': Self.Selected.Item.'SSC Manager',
+                Task: Self.Selected.Item.Task
+            }
+        )
+    },
+    IfError(
+        varnew,
+        Notify(
+            "There was an error: " & FirstError.Message,
+            NotificationType.Error
+        ),
+        Notify(
+            "Success",
+            NotificationType.Success,
+            2500
+        )
+    )
+)
+
+
+
+
+
+Visible
+CountRows(Self.Selected.AllItems)=1
+//Self.Selected.State<>FormMode.New
